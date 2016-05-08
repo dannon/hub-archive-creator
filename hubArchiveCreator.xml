@@ -25,8 +25,13 @@
         python $__tool_directory__/hubArchiveCreator.py
 
         #for $i, $f in enumerate( $format )
-            #if $f.formatChoice.format_select == "gff3"
-                -g $f.formatChoice.GFF3
+            #if $f.formatChoice.format_select == "g_f"
+                #if $f.formatChoice.g_formatChoice.g_f_select == "gtf"
+                    --gtf $f.formatChoice.g_formatChoice.GTF
+                #end if
+                #if $f.formatChoice.g_formatChoice.g_f_select == "gff"
+                    -g $f.formatChoice.g_formatChoice.GFF3
+                #end if
             #end if
             #if $f.formatChoice.format_select == "bed"
                 #if $f.formatChoice.bedChoice.bed_select == "bed"
@@ -50,17 +55,33 @@
         <repeat name="format" title="Formats">
             <conditional name="formatChoice">
                 <param name="format_select" type="select" label="Format">
-                    <option value="gff3" selected="true">GFF3</option>
+                    <option value="g_f" selected="true">G*F - General * Format</option>
                     <option value="bed">BED</option>
                 </param>
 
-                <when value="gff3">
-                    <param
-                        format="gff3"
-                        name="GFF3"
-                        type="data"
-                        label="GFF3 track to display"
-                    />
+                <when value="g_f">
+                    <conditional name="g_formatChoice">
+                        <param name="g_f_select" type="select" label="General Format Choice">
+                            <option value="gtf" selected="true">GTF</option>
+                            <option value="gff3">GFF</option>
+                        </param>
+                        <when value="gtf">
+                            <param
+                                format="gtf"
+                                name="GTF"
+                                type="data"
+                                label="GTF - General Transfer Format"
+                            />
+                        </when>
+                        <when value="gff3">
+                            <param
+                                format="gff3"
+                                name="GFF3"
+                                type="data"
+                                label="GFF3 - General Feature Format 3"
+                            />
+                        </when>
+                    </conditional>
                 </when>
                 <when value="bed">
                     <conditional name="bedChoice">

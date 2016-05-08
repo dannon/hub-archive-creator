@@ -25,8 +25,11 @@ def main(argv):
     # Reference genome mandatory
     parser.add_argument('-f', '--fasta', help='Fasta file of the reference genome')
 
+    # GTF Management
+    parser.add_argument('-z', '--gtf', help='GTF input')
+
     # GFF3 Management
-    parser.add_argument('-g', '--gff3', help='GFF3 output of Augustus')
+    parser.add_argument('-g', '--gff3', help='GFF3 input')
 
     # Bed4+12 (TrfBig)
     parser.add_argument('-t', '--bedSimpleRepeats', help='Bed4+12 format, using simpleRepeats.as')

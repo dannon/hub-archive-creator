@@ -50,6 +50,17 @@ class SubTools(object):
         p = self.__handleExceptionAndCheckCall__(array_call)
         return p
 
+    def gtfToGenePred(self, input_gtf_file_name, gene_pred_file_name):
+        """
+        Call gtfToGenePred and write the result into gene_pred_file_name
+        :param input_gtf_file_name:
+        :param gene_pred_file_name:
+        :return:
+        """
+        array_call = ['gtfToGenePred', input_gtf_file_name, gene_pred_file_name]
+        p = self.__handleExceptionAndCheckCall__(array_call)
+        return p
+
     def genePredToBed(self, gene_pred_file_name, unsorted_bed_file_name):
         """
         Call genePredToBed and write the result into unsorted_bed_file_name

@@ -52,6 +52,7 @@ def main(argv):
     args = parser.parse_args()
 
     inputFastaFile = args.fasta
+    inputGTFFile = args.gtf
     inputGFF3File = args.gff3
     inputBedSimpleRepeatsFile = args.bedSimpleRepeats
     inputBedGeneric = args.bed
@@ -68,9 +69,15 @@ def main(argv):
     trackHub = TrackHub(inputFastaFile, outputFile, extra_files_path, toolDirectory)
 
     # Process Augustus
+    # TODO: Change AugustProcess to an abstract class GeneralFormat which has two sub-classes: GFF3Format and GTFFormat
     if inputGFF3File:
-        augustusObject = AugustusProcess(inputGFF3File, inputFastaFile, outputFile, toolDirectory, extra_files_path, ucsc_tools_path, trackHub)
+        augustusObject = AugustusProcess(inputFastaFile, outputFile, toolDirectory, extra_files_path, ucsc_tools_path, trackHub, inputGFF3File=inputGFF3File)
         trackHub.addTrack(augustusObject.track)
+
+    if inputGTFFile:
+        print "In hubArchiveCreator.py, inputGTFFile is: %s" % inputGTFFile
+        gtfTransformedObject = AugustusProcess(inputFastaFile, outputFile, toolDirectory, extra_files_path, ucsc_tools_path, trackHub, inputGTFFile=inputGTFFile)
+        trackHub.addTrack(gtfTransformedObject.track)
 
     if inputBedSimpleRepeatsFile:
         bedRepeat = BedSimpleRepeats(inputBedSimpleRepeatsFile, inputFastaFile, outputFile, toolDirectory, extra_files_path, ucsc_tools_path, trackHub)

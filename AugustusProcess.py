@@ -11,12 +11,15 @@ from util.SubTools import SubTools
 
 
 class AugustusProcess(object):
-    def __init__(self, inputGFF3File, inputFastaFile, outputFile, toolDirectory, extra_files_path, ucsc_tools_path, trackHub):
+    def __init__(self, inputFastaFile, outputFile, toolDirectory, extra_files_path, ucsc_tools_path, trackHub, inputGFF3File=None, inputGTFFile=None):
         super(AugustusProcess, self).__init__()
 
         self.track = None
 
-        inputGFF3File = open(inputGFF3File, 'r')
+        if inputGTFFile:
+            self.inputGTFFile = open(inputGTFFile, 'r')
+        if inputGFF3File:
+            inputGFF3File = open(inputGFF3File, 'r')
         inputFastaFile = open(inputFastaFile, 'r')
 
         # TODO: See if we need these temporary files as part of the generated files
@@ -32,8 +35,14 @@ class AugustusProcess(object):
         # Init SubTools to call all the tools needed
         self.subTools = SubTools()
 
+        # TODO: Erk, to delete ASAP for an abstract class GeneralFormat, and two sub-classes GFF3Format and GTFFormat
+        # gtfToGenePred processing
+        if self.inputGTFFile:
+            self.subTools.gtfToGenePred(self.inputGTFFile.name, genePredFile.name)
+
         # gff3ToGenePred processing
-        self.subTools.gff3ToGenePred(inputGFF3File.name, genePredFile.name)
+        if inputGFF3File:
+            self.subTools.gff3ToGenePred(inputGFF3File.name, genePredFile.name)
 
         # genePredToBed processing
         self.subTools.genePredToBed(genePredFile.name, unsortedBedFile.name)
